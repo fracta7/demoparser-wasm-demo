@@ -30,10 +30,11 @@
             var startTime = performance.now()
             const reader = new FileReader();
             reader.onload = function (event) {
+                let path = event.target.path
                 const uint8Array = new Uint8Array(event.target.result);               
-                let endTicks = Math.max(...parseEvent(uint8Array,"round_end").map(x => x.tick))
+                let endTicks = Math.max(...parseEvent(path,"round_end").map(x => x.tick))
                 let fields = ["kills_total", "deaths_total", "mvps", "headshot_kills_total", "ace_rounds_total", "score"]
-                let scoreboard = parseTicks(uint8Array, fields, [endTicks])
+                let scoreboard = parseTicks(path, fields, [endTicks])
                 console.log(scoreboard)
                 generateTableFromData(scoreboard)
             };
