@@ -31,8 +31,11 @@
             const reader = new FileReader();
             reader.onload = function (event) {
                 const uint8Array = new Uint8Array(event.target.result);               
-                let result = parseEvent(uint8Array, "player_death", [], ["total_rounds_played", "is_warmup_period"]);
-                generateTableFromData(result)
+                let result = parseEvent(uint8Array, "round_end").map(x=>x.tick)
+                let fields = ["kills_total", "deaths_total", "mvps", "headshot_kills_total", "ace_rounds_total", "score"]
+                let scoreboard = parseTicks(uint8Array, fields, result)
+                console.log(scoreboard)
+                generateTableFromData(scoreboard)
             };
             reader.readAsArrayBuffer(this.files[0]);
         },
@@ -40,8 +43,9 @@
     );
 
     function generateTableFromData(eventsNoFilter) {
+
         let events = eventsNoFilter.filter(x => x.get("is_warmup_period") === false);
-        const columnNames = ["attacker_name", "user_name", "tick", "total_rounds_played", "weapon"];
+        const columnNames = ["kills_total", "deaths_total", "mvps", "headshot_kills_total", "ace_rounds_total", "score"];
         
         const table = document.createElement("table");
         table.setAttribute("border", "2");
