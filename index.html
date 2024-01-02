@@ -32,7 +32,7 @@
             reader.onload = function (event) {
                 const uint8Array = new Uint8Array(event.target.result);               
                 let endTicks = Math.max(...parseEvent(uint8Array,"round_end").map(x => x.tick))
-                let fields = ["kills_total", "deaths_total", "mvps", "headshot_kills_total", "ace_rounds_total", "score"]
+                let fields = ["kills_total", "deaths_total", "mvps", "headshot_kills_total", "ace_rounds_total", "4k_rounds_total", "3k_rounds_total"]
                 let scoreboard = parseTicks(uint8Array, fields, [endTicks])
                 console.log(scoreboard)
                 generateTableFromData(scoreboard)
@@ -44,8 +44,8 @@
 
     function generateTableFromData(eventsNoFilter) {
 
-        let events = eventsNoFilter.filter(x => x.get("is_warmup_period") === false);
-        const columnNames = ["kills_total", "deaths_total", "mvps", "headshot_kills_total", "ace_rounds_total", "score"];
+        let events = eventsNoFilter;
+        const columnNames = ["kills_total", "deaths_total", "mvps", "headshot_kills_total", "ace_rounds_total", "4k_rounds_total", "3k_rounds_total"];
         
         const table = document.createElement("table");
         table.setAttribute("border", "2");
